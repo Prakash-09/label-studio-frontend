@@ -7,6 +7,19 @@ module.exports.SAMPLETEST = {
             <Label value="Earth" background="green"></Label>
         </RectangleLabels>
     </View>`,
+    configRelationData: `
+    <View>
+        <Relations>
+            <Relation value="hello" />
+            <Relation value="world" />
+        </Relations>
+
+        <Text name="txt-1" value="$text" />
+        <Labels name="lbl-1" toName="txt-1">
+            <Label value="Relevant" />
+            <Label value="Not Relevant" />
+        </Labels>
+    </View>`,
     configTextData: [
         {
             id: "Care Continuity",
@@ -124,15 +137,190 @@ module.exports.SAMPLETEST = {
         "skip",
         "submit"
     ],
-    taskData: {
-        annotations: [],
+    textTaskData: [
+        {
+            annotations: [
+                {
+                    id: "1001",
+                    result: [
+                        {
+                            from_name: "label",
+                            id: "1111111",
+                            to_name: "text",
+                            type: "labels",
+                            value: {
+                                end: 36,
+                                labels: ["Care Continuity"],
+                                start: 0,
+                                text: "First Experiment in the label studio",
+                            }
+                        }
+                    ],
+                },
+                {
+                    id: "1002",
+                    result: [
+                        {
+                            from_name: "label",
+                            id: "FYMFfaOCUb",
+                            to_name: "text",
+                            type: "labels",
+                            value: {
+                                end: 36,
+                                labels: ["General Sastisfaction"],
+                                start: 30,
+                                text: "studio",
+                            }
+                        },
+                        {
+                            from_name: "label",
+                            id: "xyzppp",
+                            to_name: "text",
+                            type: "labels",
+                            value: {
+                                end: 5,
+                                labels: ["Care Continuity"],
+                                start: 0,
+                                text: "First",
+                            }
+                        },
+                        {
+                            direction: "right",
+                            from_id: "xyzppp",
+                            to_id: "FYMFfaOCUb",
+                            type: "relation",
+                        },
+                    ],
+                },
+                {
+                    id: "1003",
+                    result: [
+                        {
+                            from_name: "label",
+                            id: "4RmgpNd4MA",
+                            to_name: "text",
+                            type: "labels",
+                            value: {
+                                end: 36,
+                                labels: ["App Usability"],
+                                start: 0,
+                                text: "First Experiment in the label studio",
+                            }
+                        },
+                        {
+                            from_name: "label",
+                            id: "p8JP3S9RVS",
+                            to_name: "text",
+                            type: "labels",
+                            value: {
+                                end: 23,
+                                labels: ["Care Continuity"],
+                                start: 17,
+                                text: "in the",
+                            },
+                        },
+                    ],
+                },
+            ],
+            predictions: [],
+            id: 1,
+            data: {
+                text: "First Experiment in the label studio"
+            }
+        },
+        {
+            annotations: [
+                {
+                    id: "2001",
+                    result: [
+                        {
+                            from_name: "label",
+                            id: "1111111",
+                            to_name: "text",
+                            type: "labels",
+                            value: {
+                                end: 36,
+                                labels: ["Care Continuity"],
+                                start: 0,
+                                text: "First Experiment in the label studio",
+                            }
+                        }
+                    ],
+                },
+                {
+                    id: "2002",
+                    result: [
+                        {
+                            from_name: "label",
+                            id: "FYMFfaOCUb",
+                            to_name: "text",
+                            type: "labels",
+                            value: {
+                                end: 36,
+                                labels: ["General Sastisfaction"],
+                                start: 30,
+                                text: "studio",
+                            }
+                        }
+                    ],
+                },
+            ],
+            predictions: [],
+            id: 2,
+            data: {
+                text: "Second Experiment in the label studio"
+            }
+        },
+    ],
+    imageTaskData: {
+        annotations: [
+            {
+                id: "1004",
+                result: [
+                    {
+                        from_name: "tag",
+                        id: "ItuiGIXL21",
+                        image_rotation: 0,
+                        original_height: 2802,
+                        original_width: 2242,
+                        to_name: "img",
+                        type: "rectanglelabels",
+                        value: {
+                            height: 7.470288624787776,
+                            rectanglelabels: ["Moon"],
+                            rotation: 0,
+                            width: 12.738853503184714,
+                            x: 50.530785562632694,
+                            y: 7.300509337860781,
+                        }
+                    },
+                    {
+                        from_name: "tag",
+                        id: "mD1CJrZgq9",
+                        image_rotation: 0,
+                        original_height: 2802,
+                        original_width: 2242,
+                        to_name: "img",
+                        type: "rectanglelabels",
+                        value: {
+                            height: 7.470288624787776,
+                            rectanglelabels: ["Earth"],
+                            rotation: 0,
+                            width: 93.20594479830149,
+                            x: 3.6093418259023355,
+                            y: 91.68081494057725,
+                        },
+                    }
+                ],
+            },
+        ],
         predictions: [],
         id: 1,
         data: {
             image: "https://htx-misc.s3.amazonaws.com/opensource/label-studio/examples/images/nick-owuor-astro-nic-visuals-wDifg5xc9Z4-unsplash.jpg",
-            text: "First Experiment in the label studio"
+            // text: "First Experiment in the label studio"
         }
-    }
+    },
     // messagesData: {
     //     DONE: "Done!",
     //     NO_COMP_LEFT: "No more annotations",
