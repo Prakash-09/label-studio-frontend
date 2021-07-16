@@ -11,6 +11,7 @@ module.exports.RESPONSE_DATA = [
                 { end: 21, label: "General Satisfaction", start: 0, text: "Awesome, very helpful" },
                 { end: 78, label: "Doctor Proficiency", start: 23, text: "Dr was very thorough with questions and very attentive." },
                 { end: 134, label: "General Satisfaction", start: 79, text: "I feel hopeful I will get some answers now for my pain." },
+                // { direction: "right", from_id: "001", to_id: "101", type: "relation" }
             ]
         },
         document: "Awesome, very helpful, Dr was very thorough with questions and very attentive. I feel hopeful I will get some answers now for my pain.",
@@ -34,138 +35,6 @@ module.exports.RESPONSE_DATA = [
         reannotateStatus: "INPROGRESS",
     },
 ]
-
-module.exports.LABEL_STUDIO_DATA_PROPERTIES = {
-    lsInterfacesData: [
-        "panel",
-        "update",
-        "controls",
-        "side-column",
-        "annotations:menu",
-        // "annotations:add-new",
-        "annotatiosns:delete",
-        "predictions:menu",
-        "skip",
-        "submit"
-    ],
-    lsTextTaskData: [
-        // {
-        //     annotations: [
-        //         {
-        //             id: "1001",
-        //             result: [
-        //                 {
-        //                     from_name: "label",
-        //                     id: "1111111",
-        //                     to_name: "text",
-        //                     type: "labels",
-        //                     value: {
-        //                         end: 36,
-        //                         labels: ["Care Continuity"],
-        //                         start: 0,
-        //                         text: "First Experiment in the label studio",
-        //                     }
-        //                 }
-        //             ],
-        //         },
-        //         {
-        //             id: "1002",
-        //             result: [
-        //                 {
-        //                     from_name: "label",
-        //                     id: "FYMFfaOCUb",
-        //                     to_name: "text",
-        //                     type: "labels",
-        //                     value: {
-        //                         end: 36,
-        //                         labels: ["General Sastisfaction"],
-        //                         start: 30,
-        //                         text: "studio",
-        //                     }
-        //                 }
-        //             ],
-        //         },
-        //         {
-        //             id: "1003",
-        //             result: [
-        //                 {
-        //                     from_name: "label",
-        //                     id: "4RmgpNd4MA",
-        //                     to_name: "text",
-        //                     type: "labels",
-        //                     value: {
-        //                         end: 36,
-        //                         labels: ["App Usability"],
-        //                         start: 0,
-        //                         text: "First Experiment in the label studio",
-        //                     }
-        //                 },
-        //                 {
-        //                     from_name: "label",
-        //                     id: "p8JP3S9RVS",
-        //                     to_name: "text",
-        //                     type: "labels",
-        //                     value: {
-        //                         end: 23,
-        //                         labels: ["Care Continuity"],
-        //                         start: 17,
-        //                         text: "in the",
-        //                     },
-        //                 }
-        //             ],
-        //         },
-        //     ],
-        //     predictions: [],
-        //     id: 1,
-        //     data: {
-        //         text: "Awesome, very helpful, Dr was very thorough with questions and very attentive. I feel hopeful I will get some answers now for my pain."
-        //     }
-        // },
-        // {
-        //     annotations: [
-        //         {
-        //             id: "2001",
-        //             result: [
-        //                 {
-        //                     from_name: "label",
-        //                     id: "1111111",
-        //                     to_name: "text",
-        //                     type: "labels",
-        //                     value: {
-        //                         end: 74,
-        //                         labels: ["General Satisfaction"],
-        //                         start: 0,
-        //                         text: "Simply the best I am willing to do a commercial 😊 for u guys 2 thumb's up !!",
-        //                     }
-        //                 }
-        //             ],
-        //         },
-        //         {
-        //             id: "2002",
-        //             result: [
-        //                 {
-        //                     from_name: "label",
-        //                     id: "FYMFfaOCUb",
-        //                     to_name: "text",
-        //                     type: "labels",
-        //                     value: {
-        //                         end: 36,
-        //                         labels: ["General Sastisfaction"],
-        //                         start: 30,
-        //                         text: "studio",
-        //                     }
-        //                 }
-        //             ],
-        //         },
-        //     ],
-        //     predictions: [],
-        //     id: 2,
-        //     data: {
-        //         text: "Simply the best I am willing to do a commercial 😊 for u guys 2 thumb's up !!"
-        //     }
-        // },
-    ],
-}
 
 module.exports.LABEL_CONFIG = [
     {

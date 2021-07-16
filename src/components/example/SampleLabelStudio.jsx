@@ -126,11 +126,13 @@ export default class SampleLabelStuio extends React.Component {
         console.log("responseAnnotationData", responseAnnotationData)
         var labelStudio = new LabelStudio('label-studio', {
             config: `<View>
+            <Header name="text-1" value="Lagends" />
             <Labels name="label" toName="text">
                 ${lsConfigData.map((item, itemIdx) =>
                 `<Label key='${itemIdx}' value='${item.displayName}' background='${item.background}' />`
             )}
             </Labels>
+            <Header name="text-2" value="Editor" />
             <Text name="text" value="$text" />
             </View>`,
             interfaces: lsPropertiesData.lsInterfacesData,
