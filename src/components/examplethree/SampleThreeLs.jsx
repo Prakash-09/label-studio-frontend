@@ -1,41 +1,50 @@
 import React from 'react';
-import './SampleTwoLs.css';
-import sourceData from './SampleTwoLsData';
+import './SampleThreeLs.css';
+import sourceData from './SampleThreeLsData';
 import { Row, Col, Button } from 'react-bootstrap'
 import LabelStudio from 'label-studio';
 import 'label-studio/build/static/css/main.css';
 
-export default class SampleTwoLs extends React.Component {
+export default class SampleThreeLs extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             taskNavigation: 0,
             lsLagendLabels: sourceData.LABEL_CONFIG,
-            taskData: [],
+            // taskData: [],
             response: [],
         }
     }
 
     componentDidMount() {
-        let taskData = this.state.taskData
+        // let taskData = this.state.taskData
         let taskNavigation = this.state.taskNavigation
         let response = sourceData.RESPONSE_DATA
 
-        if (response.length !== 0) {
-            for (const responseObj of response) {
+        this.labelStudioTransform(response, taskNavigation)
+
+        this.setState({ response: response })
+    }
+    labelStudioTransform(response, taskNavigation) {
+        console.log("response", response)
+        let responseData = response
+        const taskData = []
+        const navigation = taskNavigation
+
+        if (responseData.length !== 0) {
+            for (const responseObj of responseData) {
                 let taskObj = {
                     annotations: [
                         {
-                            id: `${response.indexOf(responseObj)}`,
-                            modified: false,
+                            id: `${responseData.indexOf(responseObj)}`,
                             result: []
                         }
                     ],
                     data: { text: responseObj.document, },
-                    id: 1 + parseInt(`${response.indexOf(responseObj)}`),
-                    modified: false,
-                    predictions: []
+                    id: 1 + parseInt(`${responseData.indexOf(responseObj)}`),
+                    predictions: [],
+                    modified: responseObj.modified ? responseObj.modified : false
                 }
                 if (responseObj.annotation?.entities) {
                     if (responseObj.annotation.entities.length !== 0) {
@@ -51,7 +60,7 @@ export default class SampleTwoLs extends React.Component {
                             } else {
                                 let testObj = {
                                     from_name: "label",
-                                    id: `${responseObj.annotation.entities.indexOf(entitiesObj)}${response.indexOf(responseObj)}1`,
+                                    id: `${responseObj.annotation.entities.indexOf(entitiesObj)}${responseData.indexOf(responseObj)}1`,
                                     to_name: "text",
                                     type: "labels",
                                     value: {
@@ -69,19 +78,19 @@ export default class SampleTwoLs extends React.Component {
                 taskData.push(taskObj)
             }
         }
+        // ${ taskData[navigation].modified && `<Rating name="rating" toName="text-1" maxRating="1" icon="star" size="medium" />` }
 
-        this.buildLabelStudio(taskData, taskNavigation)
+        this.buildLabelStudio(taskData, navigation)
 
-        this.setState({ response: response, taskData: taskData })
+        this.setState({ taskData: taskData })
     }
-    buildLabelStudio(taskDataParam, taskNavigation) {
-        console.log("taskDataParam", taskDataParam)
+    buildLabelStudio(taskDataParam, taskNavId) {
         const lsLagendLabels = this.state.lsLagendLabels;
-        const taskData = taskDataParam
-        const navigation = taskNavigation
+        let taskData = taskDataParam
+        let navigation = taskNavId
         var labelStudio = new LabelStudio('label-studio', {
             config: `<View>
-            <View className="${taskData[navigation].annotations[0]?.modified ? "header-class" : ""}">
+            <View className="${taskData[navigation].modified ? "header-class" : ""}">
             <Header name="text-1" value="Lagends" />  
             </View>
             <Labels name="label" toName="text">
@@ -89,7 +98,9 @@ export default class SampleTwoLs extends React.Component {
                 `<Label key='${itemIdx}' value='${item.displayName}' background='${item.background}' />`
             )}
             </Labels>
+            <View className="${taskData[navigation].modified ? "header-class" : ""}">
             <Header name="text-2" value="Editor" />
+            </View>
             <Text name="text" value="$text" />
             </View>`,
             interfaces: [
@@ -110,6 +121,11 @@ export default class SampleTwoLs extends React.Component {
             // onSubmitAnnotation: this.submitAnnotation.bind(this),
             onUpdateAnnotation: this.updateAnotation.bind(this)
         });
+
+        let ele = document.getElementById('label-studio');
+        if (ele) {
+            ele.firstElementChild.className = "my-test-class"
+        }
     }
     updateAnotation(ls, annotation) {
         let response = this.state.response
@@ -144,78 +160,46 @@ export default class SampleTwoLs extends React.Component {
                     }
                     currentResponseObj.annotation.entities.push(entityObj)
                 }
-
-                if (newSerializedObj.type === "relation") {
-                    let testObj = {
-                        direction: newSerializedObj.direction,
-                        from_id: newSerializedObj.from_id,
-                        to_id: newSerializedObj.to_id,
-                        type: newSerializedObj.type
-                    }
-                    resultArr.push(testObj)
-                } else {
-                    let testObj = {
-                        from_name: "label",
-                        id: `${getNewSerializedData.indexOf(newSerializedObj)}21`,
-                        to_name: "text",
-                        type: "labels",
-                        value: {
-                            end: newSerializedObj.end,
-                            labels: [`${newSerializedObj.label}`],
-                            start: newSerializedObj.start,
-                            text: `${newSerializedObj.text}`,
-                        },
-                    }
-                    resultArr.push(testObj)
-                }
             }
-            console.log("response", response)
-            console.log("taskData", taskData)
-            this.buildLabelStudio(taskData, taskNavigation)
-            this.setState({ response: response, taskData: taskData })
+            currentResponseObj.modified = true
+            // console.log("response", response)
+            this.labelStudioTransform(response, taskNavigation)
+            this.setState({ response: response })
         }
 
     }
     entityCreation(region) {
         let getTaskId = region.store.task.id
-        let taskData = this.state.taskData
-        let getAnnotationId = region.annotation.pk
+        let response = this.state.response
         let taskNavigation = this.state.taskNavigation
-        let selectedTaskObj = taskData.filter(item => item.id === getTaskId)[0]
-        let selectedAnnotationObj = selectedTaskObj.annotations.filter(item => item.id === getAnnotationId)[0]
+        let currentResponseObj = response[getTaskId - 1]
 
-        console.log("region", region)
-        console.log("region serialize", region.serialize())
-        console.log("selectedTaskObj", selectedTaskObj)
-        console.log("selectedAnnotationObj", selectedAnnotationObj)
+        currentResponseObj.modified = true
 
-        selectedAnnotationObj.modified = true
+        this.labelStudioTransform(response, taskNavigation)
 
-        // this.buildLabelStudio(taskData, taskNavigation)
-
-        this.setState({ taskData: taskData })
+        this.setState({ response: response })
     }
     navigateTask(type) {
-        let { taskNavigation, response, taskData } = this.state
-        console.log("navResponse", response)
-        console.log("navTaskData", taskData)
+        let { taskNavigation, response } = this.state
         if (type === "next") {
             if (taskNavigation < response.length - 1) {
                 let navIcrement = taskNavigation + 1
-                this.buildLabelStudio(taskData, navIcrement)
+                this.labelStudioTransform(response, navIcrement)
                 this.setState({ taskNavigation: navIcrement })
             }
         }
         if (type === "prev") {
             if (taskNavigation > 0) {
                 let navDecrement = taskNavigation - 1
-                this.buildLabelStudio(taskData, navDecrement)
+                this.labelStudioTransform(response, navDecrement)
                 this.setState({ taskNavigation: navDecrement })
             }
         }
     }
     addLabels() {
         let lsLagendLabels = this.state.lsLagendLabels
+        let response = this.state.response
         let taskNavigation = this.state.taskNavigation
         let taskData = this.state.taskData
         let labelObj = {
@@ -225,12 +209,11 @@ export default class SampleTwoLs extends React.Component {
             background: "yellow",
         }
         lsLagendLabels.push(labelObj)
-        this.buildLabelStudio(taskData, taskNavigation)
+        this.labelStudioTransform(response, taskNavigation)
         this.setState({ lsLagendLabels: lsLagendLabels })
     }
     render() {
-        // console.log("renderResponse", this.state.response)
-        // console.log("renderTaskData", this.state.taskData)
+        console.log("taskData", this.state.taskData && this.state.taskData)
         return (
             <div>
                 <Row className="p-3">
