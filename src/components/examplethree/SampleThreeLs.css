@@ -4,7 +4,12 @@
 .header-class > .ant-typography{
     color: orange !important;
 }
-
-.my-test-class{
-    /* background-color: red !important; */
+.ls-task-info{
+    display: none !important;
+}
+.view-container{
+    background-color: aquamarine !important;
+}
+.my-custom-class{
+    background-color: brown !important;
 }

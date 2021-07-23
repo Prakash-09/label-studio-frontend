@@ -93,7 +93,8 @@ export default class SampleTwoLs extends React.Component {
             <Text name="text" value="$text" />
             </View>`,
             interfaces: [
-                "update", "controls", "side-column", "annotations:menu", "annotatiosns:delete", "skip", "submit",
+                "update", "controls", "side-column", "annotatiosns:delete", "skip", "submit",
+                // "annotations:menu",
                 // "predictions:menu",
                 // "panel", 
                 // "annotations:add-new",
@@ -109,8 +110,19 @@ export default class SampleTwoLs extends React.Component {
             // onEntityCreate: this.entityCreation.bind(this),
             // onSubmitAnnotation: this.submitAnnotation.bind(this),
             onUpdateAnnotation: this.updateAnotation.bind(this)
+            // onUpdateAnnotation: this.updateAnnotation.bind(this)
         });
     }
+    // updateAnnotation(ls, annotation) {
+    //     let taskData = this.state.taskData
+    //     let response = this.state.response
+    //     let taskNavigation = this.state.taskNavigation
+    //     let selectedReponseObj = response[ls.task.id - 1]
+    //     let selectedTask = taskData.filter(task => task.id === ls.task.id)[0]
+
+    //     selectedTask.annotations[0].result = annotation.serializeAnnotation()
+
+    // }
     updateAnotation(ls, annotation) {
         let response = this.state.response
         let taskData = this.state.taskData
@@ -145,29 +157,29 @@ export default class SampleTwoLs extends React.Component {
                     currentResponseObj.annotation.entities.push(entityObj)
                 }
 
-                if (newSerializedObj.type === "relation") {
-                    let testObj = {
-                        direction: newSerializedObj.direction,
-                        from_id: newSerializedObj.from_id,
-                        to_id: newSerializedObj.to_id,
-                        type: newSerializedObj.type
-                    }
-                    resultArr.push(testObj)
-                } else {
-                    let testObj = {
-                        from_name: "label",
-                        id: `${getNewSerializedData.indexOf(newSerializedObj)}21`,
-                        to_name: "text",
-                        type: "labels",
-                        value: {
-                            end: newSerializedObj.end,
-                            labels: [`${newSerializedObj.label}`],
-                            start: newSerializedObj.start,
-                            text: `${newSerializedObj.text}`,
-                        },
-                    }
-                    resultArr.push(testObj)
-                }
+                // if (newSerializedObj.type === "relation") {
+                //     let testObj = {
+                //         direction: newSerializedObj.direction,
+                //         from_id: newSerializedObj.from_id,
+                //         to_id: newSerializedObj.to_id,
+                //         type: newSerializedObj.type
+                //     }
+                //     resultArr.push(testObj)
+                // } else {
+                //     let testObj = {
+                //         from_name: "label",
+                //         id: `${getNewSerializedData.indexOf(newSerializedObj)}21`,
+                //         to_name: "text",
+                //         type: "labels",
+                //         value: {
+                //             end: newSerializedObj.end,
+                //             labels: [`${newSerializedObj.label}`],
+                //             start: newSerializedObj.start,
+                //             text: `${newSerializedObj.text}`,
+                //         },
+                //     }
+                //     resultArr.push(testObj)
+                // }
             }
             console.log("response", response)
             console.log("taskData", taskData)
@@ -197,8 +209,8 @@ export default class SampleTwoLs extends React.Component {
     }
     navigateTask(type) {
         let { taskNavigation, response, taskData } = this.state
-        console.log("navResponse", response)
-        console.log("navTaskData", taskData)
+        // console.log("navResponse", response)
+        // console.log("navTaskData", taskData[0].annotations[0].result)
         if (type === "next") {
             if (taskNavigation < response.length - 1) {
                 let navIcrement = taskNavigation + 1

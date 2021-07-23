@@ -12,13 +12,11 @@ export default class SampleThreeLs extends React.Component {
         this.state = {
             taskNavigation: 0,
             lsLagendLabels: sourceData.LABEL_CONFIG,
-            // taskData: [],
             response: [],
         }
     }
 
     componentDidMount() {
-        // let taskData = this.state.taskData
         let taskNavigation = this.state.taskNavigation
         let response = sourceData.RESPONSE_DATA
 
@@ -41,10 +39,22 @@ export default class SampleThreeLs extends React.Component {
                             result: []
                         }
                     ],
-                    data: { text: responseObj.document, },
+                    data: {
+                        text: responseObj.document,
+                        dialogue: [],
+                    },
                     id: 1 + parseInt(`${responseData.indexOf(responseObj)}`),
                     predictions: [],
                     modified: responseObj.modified ? responseObj.modified : false
+                }
+                if (responseObj.comments) {
+                    for (const commentsObj of responseObj.comments) {
+                        let commentObj = {
+                            author: commentsObj.commentedBy,
+                            text: commentsObj.comment + " -- " + commentsObj.commentedAt,
+                        }
+                        taskObj.data.dialogue.push(commentObj)
+                    }
                 }
                 if (responseObj.annotation?.entities) {
                     if (responseObj.annotation.entities.length !== 0) {
@@ -102,9 +112,15 @@ export default class SampleThreeLs extends React.Component {
             <Header name="text-2" value="Editor" />
             </View>
             <Text name="text" value="$text" />
+            <View>
+                <Header name="text-3" value="User Feedback" />
+                <Paragraphs name="dialogue-1" value="$dialogue" layout="dialogue" />
+            </View>
             </View>`,
             interfaces: [
-                "update", "controls", "side-column", "annotations:menu", "annotatiosns:delete", "skip", "submit",
+                "update", "controls", "side-column", "annotatiosns:delete", "submit",
+                // "skip",
+                // "annotations:menu",
                 // "predictions:menu",
                 // "panel", 
                 // "annotations:add-new",
@@ -119,15 +135,43 @@ export default class SampleThreeLs extends React.Component {
             },
             // onEntityCreate: this.entityCreation.bind(this),
             // onSubmitAnnotation: this.submitAnnotation.bind(this),
-            onUpdateAnnotation: this.updateAnotation.bind(this)
+            // onEntityDelete: this.deleteEntity.bind(this)
+            // onUpdateAnnotation: this.updateAnotation.bind(this),
+            onUpdateAnnotation: this.updateAnnotation.bind(this),
         });
+    }
+    updateAnnotation(ls, annotation) {
+        console.log("ls", ls, "annotation", annotation.serializeAnnotation())
+        let taskData = this.state.taskData
+        let response = this.state.response
+        let taskNavigation = this.state.taskNavigation
+        let selectedReponseObj = response[ls.task.id - 1]
+        let selectedTask = taskData.filter(task => task.id === ls.task.id)[0]
 
-        let ele = document.getElementById('label-studio');
-        if (ele) {
-            ele.firstElementChild.className = "my-test-class"
+        selectedTask.annotations[0].result = annotation.serializeAnnotation()
+
+        if (selectedTask.annotations[0].result.length !== selectedReponseObj.annotation.entities.length) {
+            selectedReponseObj.annotation.entities = []
+
+            for (const resultObj of selectedTask.annotations[0].result) {
+                if (resultObj.type === "labels") {
+                    let entityObj = {
+                        end: resultObj.value?.end,
+                        label: resultObj.value?.labels[0],
+                        start: resultObj.value?.start,
+                        text: resultObj.value?.text
+                    }
+                    selectedReponseObj.annotation.entities.push(entityObj)
+                }
+            }
         }
+        console.log("selectedReponseObj", selectedReponseObj)
+        console.log("selectedTask", selectedTask)
+
+        this.labelStudioTransform(response, taskNavigation)
     }
     updateAnotation(ls, annotation) {
+        console.log("ls", ls, "annotation", annotation.serializeAnnotation())
         let response = this.state.response
         let taskData = this.state.taskData
         let getTaskId = ls.task.id
@@ -139,30 +183,81 @@ export default class SampleThreeLs extends React.Component {
         let resultArr = annotationObj.result
 
         if (annotationSerializedArr.length !== currentResponseObj.annotation.entities.length) {
-            let getNewSerializedData = annotationSerializedArr.filter(({ id: id1 }) => !resultArr.some(({ id: id2 }) => id2 === id1))
+            // currentResponseObj.annotation.entities = []
 
-            for (const newSerializedObj of getNewSerializedData) {
-                // if (newSerializedObj.type === "relation") {
-                //     let entityObj = {
-                //         direction: newSerializedObj.direction,
-                //         from_id: newSerializedObj.from_id,
-                //         to_id: newSerializedObj.to_id,
-                //         type: newSerializedObj.type
-                //     }
-                //     currentResponseObj.annotation.entities.push(entityObj)
-                // }
-                if (newSerializedObj.type === "labels") {
-                    let entityObj = {
-                        end: newSerializedObj.value?.end,
-                        label: newSerializedObj.value?.labels[0],
-                        start: newSerializedObj.value?.start,
-                        text: newSerializedObj.value?.text
+            // for (const annotationSerializedObj of annotationSerializedArr) {
+            //     // if (annotationSerializedObj.type === "relation") {
+            //     //     let entityObj = {
+            //     //         direction: annotationSerializedObj.direction,
+            //     //         from_id: annotationSerializedObj.from_id,
+            //     //         to_id: annotationSerializedObj.to_id,
+            //     //         type: annotationSerializedObj.type
+            //     //     }
+            //     //     currentResponseObj.annotation.entities.push(entityObj)
+            //     // }
+            //     if (annotationSerializedObj.type === "labels") {
+            //         let entityObj = {
+            //             end: annotationSerializedObj.value?.end,
+            //             label: annotationSerializedObj.value?.labels[0],
+            //             start: annotationSerializedObj.value?.start,
+            //             text: annotationSerializedObj.value?.text
+            //         }
+            //         currentResponseObj.annotation.entities.push(entityObj)
+            //     }
+            // }
+            let getNewSerializedData = annotationSerializedArr.filter(({ id: id1 }) => !resultArr.some(({ id: id2 }) => id2 === id1))
+            console.log("getNewSerializedData", getNewSerializedData)
+            if (getNewSerializedData.length !== 0) {
+                console.log("if")
+                for (const newSerializedObj of getNewSerializedData) {
+                    // if (newSerializedObj.type === "relation") {
+                    //     let entityObj = {
+                    //         direction: newSerializedObj.direction,
+                    //         from_id: newSerializedObj.from_id,
+                    //         to_id: newSerializedObj.to_id,
+                    //         type: newSerializedObj.type
+                    //     }
+                    //     currentResponseObj.annotation.entities.push(entityObj)
+                    // }
+                    if (newSerializedObj.type === "labels") {
+                        let entityObj = {
+                            end: newSerializedObj.value?.end,
+                            label: newSerializedObj.value?.labels[0],
+                            start: newSerializedObj.value?.start,
+                            text: newSerializedObj.value?.text
+                        }
+                        currentResponseObj.annotation.entities.push(entityObj)
                     }
-                    currentResponseObj.annotation.entities.push(entityObj)
                 }
             }
+            // else {
+            //     currentResponseObj.annotation.entities = []
+            //     let latestSerializedData = annotationSerializedArr.filter(({ id: id1 }) => resultArr.some(({ id: id2 }) => id2 === id1))
+
+            //     for (const latestSerializedObj of latestSerializedData) {
+            //         // if (latestSerializedObj.type === "relation") {
+            //         //     let entityObj = {
+            //         //         direction: latestSerializedObj.direction,
+            //         //         from_id: latestSerializedObj.from_id,
+            //         //         to_id: latestSerializedObj.to_id,
+            //         //         type: latestSerializedObj.type
+            //         //     }
+            //         //     currentResponseObj.annotation.entities.push(entityObj)
+            //         // }
+            //         if (latestSerializedObj.type === "labels") {
+            //             let entityObj = {
+            //                 end: latestSerializedObj.value?.end,
+            //                 label: latestSerializedObj.value?.labels[0],
+            //                 start: latestSerializedObj.value?.start,
+            //                 text: latestSerializedObj.value?.text
+            //             }
+            //             currentResponseObj.annotation.entities.push(entityObj)
+            //         }
+            //     }
+            //     console.log("currentResponseObj", currentResponseObj.annotation.entities)
+
+            // }
             currentResponseObj.modified = true
-            // console.log("response", response)
             this.labelStudioTransform(response, taskNavigation)
             this.setState({ response: response })
         }
@@ -201,7 +296,6 @@ export default class SampleThreeLs extends React.Component {
         let lsLagendLabels = this.state.lsLagendLabels
         let response = this.state.response
         let taskNavigation = this.state.taskNavigation
-        let taskData = this.state.taskData
         let labelObj = {
             id: "New Label",
             displayName: "New Label",
@@ -213,7 +307,7 @@ export default class SampleThreeLs extends React.Component {
         this.setState({ lsLagendLabels: lsLagendLabels })
     }
     render() {
-        console.log("taskData", this.state.taskData && this.state.taskData)
+        console.log("response", this.state.response)
         return (
             <div>
                 <Row className="p-3">
