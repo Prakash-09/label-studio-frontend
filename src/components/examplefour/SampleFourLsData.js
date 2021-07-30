@@ -210,3 +210,121 @@ module.exports.LABEL_CONFIG = [
         // background: "#475",
     }
 ]
+module.exports.LABEL_ANNOTATIONS_CONFIG = [
+    {
+        id: "Care Continuity",
+        displayName: "Care Continuity",
+        description: "Care Continuity",
+    },
+    {
+        id: "Cancelled Appointment",
+        displayName: "Cancelled Appointment",
+        description: "Cancelled Appointment",
+    },
+    {
+        id: "Pre Appointment Experience",
+        displayName: "Pre Appointment Experience",
+        description: "Pre Appointment Experience",
+
+    },
+    {
+        id: "App Usability",
+        displayName: "App Usability",
+        description: "App Usability",
+    },
+    {
+        id: "App Onboarding",
+        displayName: "App Onboarding",
+        description: "App Onboarding",
+    },
+    {
+        id: "Technical Issue",
+        displayName: "Technical Issue",
+        description: "Technical Issue",
+    },
+    {
+        id: "Existing Feature Feedback",
+        displayName: "Existing Feature Feedback",
+        description: "Existing Feature Feedback",
+    },
+    {
+        id: "Symptom Checker Experience",
+        displayName: "Symptom Checker Experience",
+        description: "Symptom Checker Experience",
+    },
+    {
+        id: "Doctor Proficiency",
+        displayName: "Doctor Proficiency",
+        description: "Doctor Proficiency",
+    },
+    {
+        id: "Service Excellence",
+        displayName: "Service Excellence",
+        description: "Service Excellence",
+    },
+    {
+        id: "Recommendation",
+        displayName: "Recommendation",
+        description: "Recommendation",
+    },
+    {
+        id: "Family Doctor Experience Comparision",
+        displayName: "Family Doctor Experience Comparision",
+        description: "Family Doctor Experience Comparision",
+    },
+    {
+        id: "Clinic Experience Comparision",
+        displayName: "Clinic Experience Comparision",
+        description: "Clinic Experience Comparision",
+    },
+    {
+        id: "General Dissatisfaction",
+        displayName: "General Dissatisfaction",
+        description: "General Dissatisfaction",
+    },
+    {
+        id: "Data Privacy",
+        displayName: "Data Privacy",
+        description: "Data Privacy",
+    },
+    {
+        id: "Connection Issue",
+        displayName: "Connection Issue",
+        description: "Connection Issue",
+    },
+    {
+        id: "General Satisfaction",
+        displayName: "General Satisfaction",
+        description: "General Satisfaction",
+    },
+    {
+        id: "Support",
+        displayName: "Support",
+        description: "Support",
+    },
+    {
+        id: "No One Called",
+        displayName: "No One Called",
+        description: "No One Called",
+    },
+    {
+        id: "Clinics Location",
+        displayName: "Clinics Location",
+        description: "Clinics Location",
+    },
+    {
+        id: "Unpleased from Outcome",
+        displayName: "Unpleased from Outcome",
+        description: "Unpleased from Outcome",
+    },
+    {
+        id: "Appointment Experience",
+        displayName: "Appointment Experience",
+        description: "Appointment Experience",
+    },
+    {
+        id: "Waiting Time - Appointment",
+        displayName: "Waiting Time - Appointment",
+        description: "Waiting Time - Appointment",
+    }
+]

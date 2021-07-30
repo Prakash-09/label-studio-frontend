@@ -9,7 +9,7 @@ export default class TestLabelStudio extends React.Component {
         super(props);
 
         this.state = {
-            annotationType: "text",
+            annotationType: "image",
             labelStudioObj: TestLabelStudioData.SAMPLETEST
         }
     }
@@ -81,8 +81,8 @@ export default class TestLabelStudio extends React.Component {
 
             interfaces: labelStudioObj.interfacesData,
 
-            // task: annotationType === "image" ? labelStudioObj.imageTaskData : annotationType === "text" && labelStudioObj.textTaskData,
-            task: labelStudioObj.textTaskData[0],
+            task: annotationType === "image" ? labelStudioObj.imageTaskData : annotationType === "text" && labelStudioObj.textTaskData[0],
+            // task: labelStudioObj.textTaskData[0],
             onLabelStudioLoad: function (LS) {
                 var c = LS.annotationStore.addAnnotation({
                     userGenerate: true
