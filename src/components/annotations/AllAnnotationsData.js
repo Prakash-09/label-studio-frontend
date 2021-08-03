@@ -87,6 +87,23 @@ module.exports.RESPONSE_DATA = [
             { id: "", commentedBy: "", comment: "comment for simply the best", commentedAt: "" }
         ]
     },
+    {
+        NER_html: "<div style=\"overflow-x: auto; border: 1px solid #E6E9EF; border-radius: 0.25rem; padding: 1rem\"><div class=\"entities\" style=\"line-height: 2.5; direction: ltr\">\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    Simply the best I am willing to do a commercial 😊 for u guys 2 thumb's up !\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">General Satisfaction</span>\n</mark>\n!</div></div>",
+        NER_labels: [
+            { end: 75, entity: "General Satisfaction", start: 0 },
+        ],
+        annotation: {
+            type: "pairwise",
+            entities: []
+        },
+        documentSecondary: "To have faith is to trust yourself to the water",
+        documentPrimary: "To have faith is to trust yourself to the water",
+        document: "To have faith is to trust yourself to the water",
+        id: "60c9f0f3665765fad5dd5ee7",
+        comments: [
+            { id: "", commentedBy: "", comment: "comment for simply the best", commentedAt: "" }
+        ]
+    },
 ]
 
 module.exports.OUTPUT_STRUCTURE = {
@@ -256,34 +273,50 @@ module.exports.OUTPUT_STRUCTURE = {
     audioTaskData: {
         annotations: [
             {
-                from_name: "label",
-                id: "wavesurfer_eih8bpmmme",
-                original_length: 3.774375,
-                to_name: "audio",
-                type: "labels",
-                value: {
-                    end: 1.9411071428571427,
-                    labels: ["General Satisfaction"],
-                    start: 0.4728337912087912,
-                }
-            },
-            {
-                from_name: "label",
-                id: "wavesurfer_7lh0lv8pa48",
-                original_length: 3.774375,
-                to_name: "audio",
-                type: "labels",
-                value: {
-                    end: 3.0029093406593406,
-                    labels: ["General Satisfaction", "Doctor Proficiency"],
-                    start: 2.1318997252747254,
-                }
+                id: "1009",
+                result: [
+                    {
+                        from_name: "label",
+                        id: "wavesurfer_eih8bpmmme",
+                        original_length: 3.774375,
+                        to_name: "audio",
+                        type: "labels",
+                        value: {
+                            end: 1.9411071428571427,
+                            labels: ["General Satisfaction"],
+                            start: 0.4728337912087912,
+                        }
+                    },
+                    {
+                        from_name: "label",
+                        id: "wavesurfer_7lh0lv8pa48",
+                        original_length: 3.774375,
+                        to_name: "audio",
+                        type: "labels",
+                        value: {
+                            end: 3.0029093406593406,
+                            labels: ["General Satisfaction", "Doctor Proficiency"],
+                            start: 2.1318997252747254,
+                        }
+                    },
+                ],
             },
         ],
         predictions: [],
         id: 1,
         data: {
             audio: "https://app.heartex.ai/static/samples/game.wav",
+        }
+    },
+    pairwiseTaskData: {
+        annotations: [
+            {},
+        ],
+        predictions: [],
+        id: 1,
+        data: {
+            text1: "To have faith is to trust yourself to the water",
+            text2: "To have faith is to trust yourself to the water"
         }
     }
 }

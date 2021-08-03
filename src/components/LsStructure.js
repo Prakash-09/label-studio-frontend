@@ -177,34 +177,58 @@ module.exports.OUTPUT_STRUCTURE = {
     audioTaskData: {
         annotations: [
             {
-                from_name: "label",
-                id: "wavesurfer_eih8bpmmme",
-                original_length: 3.774375,
-                to_name: "audio",
-                type: "labels",
-                value: {
-                    end: 1.9411071428571427,
-                    labels: ["General Satisfaction"],
-                    start: 0.4728337912087912,
-                }
-            },
-            {
-                from_name: "label",
-                id: "wavesurfer_7lh0lv8pa48",
-                original_length: 3.774375,
-                to_name: "audio",
-                type: "labels",
-                value: {
-                    end: 3.0029093406593406,
-                    labels: ["General Satisfaction", "Doctor Proficiency"],
-                    start: 2.1318997252747254,
-                }
+                id: "1009",
+                result: [
+                    {
+                        from_name: "label",
+                        id: "wavesurfer_eih8bpmmme",
+                        original_length: 3.774375,
+                        to_name: "audio",
+                        type: "labels",
+                        value: {
+                            end: 1.9411071428571427,
+                            labels: ["General Satisfaction"],
+                            start: 0.4728337912087912,
+                        }
+                    },
+                    {
+                        from_name: "label",
+                        id: "wavesurfer_7lh0lv8pa48",
+                        original_length: 3.774375,
+                        to_name: "audio",
+                        type: "labels",
+                        value: {
+                            end: 3.0029093406593406,
+                            labels: ["General Satisfaction", "Doctor Proficiency"],
+                            start: 2.1318997252747254,
+                        }
+                    },
+                ],
             },
         ],
         predictions: [],
         id: 1,
         data: {
             audio: "https://app.heartex.ai/static/samples/game.wav",
+        }
+    },
+    pairwiseTaskData: {
+        annotations: [
+            {
+                from_name: "pw",
+                id: "zMCrW5IEeL",
+                to_name: "pw",
+                type: "pairwise",
+                value: {
+                    selected: "left"
+                },
+            },
+        ],
+        predictions: [],
+        id: 1,
+        data: {
+            text1: "To have faith is to trust yourself to the water",
+            text2: "To have faith is to trust yourself to the water"
         }
     }
 }

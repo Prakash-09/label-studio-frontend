@@ -33,7 +33,12 @@ export default class ImageAnnotation extends React.Component {
             for (const responseObj of responseData) {
                 let taskObj = {
                     annotations: [{ id: `${responseData.indexOf(responseObj)}`, result: [] }],
-                    data: responseObj.annotation.type === "text" ? { text: responseObj.document } : responseObj.annotation.type === "image rectangle" ? { image: responseObj.document } : responseObj.annotation.type === "image polygon" ? { image: responseObj.document } : responseObj.annotation.type === "video" ? { video: responseObj.documentSecondary, videoSource: responseObj.document } : responseObj.annotation.type === "audio" && { audio: responseObj.document },
+                    data: responseObj.annotation.type === "text" ? { text: responseObj.document }
+                        : responseObj.annotation.type === "image rectangle" ? { image: responseObj.document }
+                            : responseObj.annotation.type === "image polygon" ? { image: responseObj.document }
+                                : responseObj.annotation.type === "video" ? { video: responseObj.documentSecondary, videoSource: responseObj.document }
+                                    : responseObj.annotation.type === "audio" ? { audio: responseObj.document }
+                                        : responseObj.annotation.type === "pairwise" && { text1: responseObj.document, text2: responseObj.documentSecondary },
                     id: 1 + parseInt(`${responseData.indexOf(responseObj)}`),
                     predictions: [],
                     modified: responseObj.modified ? responseObj.modified : false,
@@ -97,8 +102,10 @@ export default class ImageAnnotation extends React.Component {
                         this.lsConfigTextHtml(lsLegendLabels)
                         : taskData[navigation].annotationType === "video" ?
                             this.lsConfigVideoHtml(lsLegendLabels)
-                            : taskData[navigation].annotationType === "audio" &&
-                            this.lsConfigAudioHtml(lsLegendLabels)
+                            : taskData[navigation].annotationType === "audio" ?
+                                this.lsConfigAudioHtml(lsLegendLabels)
+                                : taskData[navigation].annotationType === "pairwise" &&
+                                this.lsConfigPairwiseHtml(lsLegendLabels)
                 }`,
             interfaces: interfacesData,
             task: taskData[navigation],
@@ -169,6 +176,17 @@ export default class ImageAnnotation extends React.Component {
                 </Labels>
                 <AudioPlus name="audio" value="$audio"></AudioPlus>
             </View >`
+        )
+    }
+    lsConfigPairwiseHtml(lsLegendLabelsParam) {
+        const lsLegendLabels = lsLegendLabelsParam
+        return (
+            `<View>
+                <Header>Pairwise: Select one of two items</Header>
+                <Pairwise name="pw" toName="text1,text2" />
+                <Text name="text1" value="$text1" />
+                <Text name="text2" value="$text2" />
+            </View>`
         )
     }
     updateAnnotation(ls, annotation) {
