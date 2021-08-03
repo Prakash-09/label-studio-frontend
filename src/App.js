@@ -7,7 +7,7 @@ import './App.css';
 // import SampleFourLs from './components/examplefour/SampleFourLs';
 // import Test from './components/examplefour/Test';
 // import RandomColors from './components/randomcolors/RandomColors';
-import ImageAnnotation from './components/imageannotation/ImageAnnotation';
+import ImageAnnotation from './components/annotations/AllAnnotations';
 
 function App() {
     return (

@@ -11,10 +11,11 @@ module.exports.RESPONSE_DATA = [
             entities: [
                 { end: 21, label: "General Satisfaction", start: 0, text: "Awesome, very helpful" },
                 { end: 78, label: "Doctor Proficiency", start: 23, text: "Dr was very thorough with questions and very attentive." },
-                { end: 134, label: "General Satisfaction", start: 79, text: "I feel hopeful I will get some answers now for my pain." },
+                // { end: 134, label: "General Satisfaction", start: 79, text: "I feel hopeful I will get some answers now for my pain." },
                 // { direction: "right", from_id: "001", to_id: "101", type: "relation" }
             ]
         },
+        documentSecondary: "",
         document: "Awesome, very helpful, Dr was very thorough with questions and very attentive. I feel hopeful I will get some answers now for my pain.",
         id: "60c9f255665765fad5dd5eed",
         comments: [
@@ -31,6 +32,7 @@ module.exports.RESPONSE_DATA = [
             type: "image rectangle",
             entities: []
         },
+        documentSecondary: "",
         document: "https://htx-misc.s3.amazonaws.com/opensource/label-studio/examples/images/nick-owuor-astro-nic-visuals-wDifg5xc9Z4-unsplash.jpg",
         id: "60ca1215665765fad5dd5f68",
         comments: [
@@ -46,8 +48,41 @@ module.exports.RESPONSE_DATA = [
             type: "image polygon",
             entities: []
         },
+        documentSecondary: "",
         document: "https://imgflip.com/s/meme/Leonardo-Dicaprio-Cheers.jpg",
         id: "60ca02bb665765fad5dd5f33",
+        comments: [
+            { id: "", commentedBy: "", comment: "comment for simply the best", commentedAt: "" }
+        ]
+    },
+    {
+        NER_html: "<div style=\"overflow-x: auto; border: 1px solid #E6E9EF; border-radius: 0.25rem; padding: 1rem\"><div class=\"entities\" style=\"line-height: 2.5; direction: ltr\">\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    Simply the best I am willing to do a commercial 😊 for u guys 2 thumb's up !\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">General Satisfaction</span>\n</mark>\n!</div></div>",
+        NER_labels: [
+            { end: 75, entity: "General Satisfaction", start: 0 },
+        ],
+        annotation: {
+            type: "video",
+            entities: []
+        },
+        documentSecondary: "<video src='https://app.heartex.ai/static/samples/opossum_snow.mp4' width=100% muted /><img src onerror=\"$=n=>document.getElementsByTagName(n)[0];a=$('audio');v=$('video');a.onseeked=()=>{v.currentTime=a.currentTime};a.onplay=()=>v.play();a.onpause=()=>v.pause()\" />",
+        document: "https://app.heartex.ai/static/samples/opossum_snow.mp4",
+        id: "60c9ef9c665765fad5dd5ee4",
+        comments: [
+            { id: "", commentedBy: "", comment: "comment for simply the best", commentedAt: "" }
+        ]
+    },
+    {
+        NER_html: "<div style=\"overflow-x: auto; border: 1px solid #E6E9EF; border-radius: 0.25rem; padding: 1rem\"><div class=\"entities\" style=\"line-height: 2.5; direction: ltr\">\n<mark class=\"entity\" style=\"background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;\">\n    Simply the best I am willing to do a commercial 😊 for u guys 2 thumb's up !\n    <span style=\"font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem\">General Satisfaction</span>\n</mark>\n!</div></div>",
+        NER_labels: [
+            { end: 75, entity: "General Satisfaction", start: 0 },
+        ],
+        annotation: {
+            type: "audio",
+            entities: []
+        },
+        documentSecondary: "",
+        document: "https://app.heartex.ai/static/samples/game.wav",
+        id: "60c9f0f3665765fad5dd5ee7",
         comments: [
             { id: "", commentedBy: "", comment: "comment for simply the best", commentedAt: "" }
         ]
@@ -127,7 +162,6 @@ module.exports.OUTPUT_STRUCTURE = {
         id: 1,
         data: {
             image: "https://htx-misc.s3.amazonaws.com/opensource/label-studio/examples/images/nick-owuor-astro-nic-visuals-wDifg5xc9Z4-unsplash.jpg",
-            // text: "First Experiment in the label studio"
         }
     },
     polygonImageTaskData: {
@@ -178,6 +212,78 @@ module.exports.OUTPUT_STRUCTURE = {
         id: 1,
         data: {
             image: "https://imgflip.com/s/meme/Leonardo-Dicaprio-Cheers.jpg",
+        }
+    },
+    videoTaskData: {
+        annotations: [
+            {
+                id: "1004",
+                result: [
+                    {
+                        from_name: "tricks",
+                        id: "wavesurfer_j9hbbcu5k68",
+                        original_length: 42,
+                        to_name: "audio",
+                        type: "labels",
+                        value: {
+                            end: 6.461538461538462,
+                            labels: ["General Satisfaction"],
+                            start: 0.9230769230769231,
+                        },
+                    },
+                    {
+                        from_name: "tricks",
+                        id: "wavesurfer_8l4t72v5a6",
+                        original_length: 42,
+                        to_name: "audio",
+                        type: "labels",
+                        value: {
+                            end: 18.83076923076923,
+                            labels: ["Doctor Proficiency"],
+                            start: 10.153846153846153,
+                        },
+                    }
+                ],
+            },
+        ],
+        predictions: [],
+        id: 1,
+        data: {
+            video: "https://app.heartex.ai/static/samples/opossum_snow.mp4",
+            videoSource: `<video src='https://app.heartex.ai/static/samples/opossum_snow.mp4' width=100% muted /><img src onerror="$=n => document.getElementsByTagName(n)[0]; a=$('audio'); v=$('video'); a.onseeked = () => { v.currentTime = a.currentTime }; a.onplay = () => v.play(); a.onpause = () => v.pause()" />`
+        }
+    },
+    audioTaskData: {
+        annotations: [
+            {
+                from_name: "label",
+                id: "wavesurfer_eih8bpmmme",
+                original_length: 3.774375,
+                to_name: "audio",
+                type: "labels",
+                value: {
+                    end: 1.9411071428571427,
+                    labels: ["General Satisfaction"],
+                    start: 0.4728337912087912,
+                }
+            },
+            {
+                from_name: "label",
+                id: "wavesurfer_7lh0lv8pa48",
+                original_length: 3.774375,
+                to_name: "audio",
+                type: "labels",
+                value: {
+                    end: 3.0029093406593406,
+                    labels: ["General Satisfaction", "Doctor Proficiency"],
+                    start: 2.1318997252747254,
+                }
+            },
+        ],
+        predictions: [],
+        id: 1,
+        data: {
+            audio: "https://app.heartex.ai/static/samples/game.wav",
         }
     }
 }
