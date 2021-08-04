@@ -1,4 +1,4 @@
-module.exports.OUTPUT_STRUCTURE = {
+module.exports.LABEL_STUDIO_STRUCTURE = {
     textTaskData: {
         annotations: [
             {
@@ -10,7 +10,7 @@ module.exports.OUTPUT_STRUCTURE = {
                         to_name: "text",
                         type: "labels",
                         value: {
-                            end: 36,
+                            end: 22,
                             labels: ["General Satisfaction"],
                             start: 0,
                             text: "Awesome, very helpful",
@@ -34,13 +34,14 @@ module.exports.OUTPUT_STRUCTURE = {
         predictions: [],
         id: 1,
         data: {
-            text: "First Experiment in the label studio"
+            content1: "Awesome, very helpful, Dr was very thorough with questions and very attntive. I feel hopeful I will get some answers now for my pain.",
+            content2: ""
         }
     },
     rectangleImageTaskData: {
         annotations: [
             {
-                id: "1004",
+                id: "1002",
                 result: [
                     {
                         from_name: "tag",
@@ -82,13 +83,14 @@ module.exports.OUTPUT_STRUCTURE = {
         predictions: [],
         id: 1,
         data: {
-            image: "https://htx-misc.s3.amazonaws.com/opensource/label-studio/examples/images/nick-owuor-astro-nic-visuals-wDifg5xc9Z4-unsplash.jpg",
+            content1: "https://htx-misc.s3.amazonaws.com/opensource/label-studio/examples/images/nick-owuor-astro-nic-visuals-wDifg5xc9Z4-unsplash.jpg",
+            content2: ""
         }
     },
     polygonImageTaskData: {
         annotations: [
             {
-                id: "1004",
+                id: "1003",
                 result: [
                     {
                         from_name: "tag",
@@ -132,7 +134,8 @@ module.exports.OUTPUT_STRUCTURE = {
         predictions: [],
         id: 1,
         data: {
-            image: "https://imgflip.com/s/meme/Leonardo-Dicaprio-Cheers.jpg",
+            content1: "https://imgflip.com/s/meme/Leonardo-Dicaprio-Cheers.jpg",
+            content2: ""
         }
     },
     videoTaskData: {
@@ -170,14 +173,14 @@ module.exports.OUTPUT_STRUCTURE = {
         predictions: [],
         id: 1,
         data: {
-            video: "https://app.heartex.ai/static/samples/opossum_snow.mp4",
-            videoSource: `<video src='https://app.heartex.ai/static/samples/opossum_snow.mp4' width=100% muted /><img src onerror="$=n => document.getElementsByTagName(n)[0]; a=$('audio'); v=$('video'); a.onseeked = () => { v.currentTime = a.currentTime }; a.onplay = () => v.play(); a.onpause = () => v.pause()" />`
+            content1: "<video src='https://app.heartex.ai/static/samples/opossum_snow.mp4' width=100% muted /><img src onerror=\"$=n => document.getElementsByTagName(n)[0]; a=$('audio'); v=$('video'); a.onseeked = () => { v.currentTime = a.currentTime }; a.onplay = () => v.play(); a.onpause = () => v.pause()\" />",
+            content2: "https://app.heartex.ai/static/samples/opossum_snow.mp4",
         }
     },
     audioTaskData: {
         annotations: [
             {
-                id: "1009",
+                id: "1005",
                 result: [
                     {
                         from_name: "label",
@@ -199,7 +202,7 @@ module.exports.OUTPUT_STRUCTURE = {
                         type: "labels",
                         value: {
                             end: 3.0029093406593406,
-                            labels: ["General Satisfaction", "Doctor Proficiency"],
+                            labels: ["General Satisfaction"],
                             start: 2.1318997252747254,
                         }
                     },
@@ -209,26 +212,168 @@ module.exports.OUTPUT_STRUCTURE = {
         predictions: [],
         id: 1,
         data: {
-            audio: "https://app.heartex.ai/static/samples/game.wav",
+            content1: "https://app.heartex.ai/static/samples/game.wav",
+            content2: ""
         }
     },
     pairwiseTaskData: {
         annotations: [
             {
-                from_name: "pw",
-                id: "zMCrW5IEeL",
-                to_name: "pw",
-                type: "pairwise",
-                value: {
-                    selected: "left"
-                },
+                id: "1006",
+                result: [
+                    {
+                        from_name: "pw",
+                        id: "zMCrW5IEeL",
+                        to_name: "pw",
+                        type: "pairwise",
+                        value: {
+                            selected: "left"
+                        },
+                    },
+                ]
             },
         ],
         predictions: [],
         id: 1,
         data: {
-            text1: "To have faith is to trust yourself to the water",
-            text2: "To have faith is to trust yourself to the water"
+            content1: "To have faith is to trust yourself to the water",
+            content2: "To have faith is to trust yourself to the water"
+        }
+    },
+    keypointTaskData: {
+        annotations: [
+            {
+                id: "1007",
+                result: [
+                    {
+                        from_name: "label",
+                        id: "8s7cNt07IP",
+                        image_rotation: 0,
+                        original_height: 2802,
+                        original_width: 2242,
+                        to_name: "img",
+                        type: "keypointlabels",
+                        value: {
+                            keypointlabels: ["General Satisfaction"],
+                            width: 0.49382716049382713,
+                            x: 55.80246913580247,
+                            y: 10.869565217391305,
+                        },
+                    },
+                    {
+                        from_name: "label",
+                        id: "L1eE9q3KfG",
+                        image_rotation: 0,
+                        original_height: 2802,
+                        original_width: 2242,
+                        to_name: "img",
+                        type: "keypointlabels",
+                        value: {
+                            keypointlabels: ["Doctor Proficiency"],
+                            width: 0.49382716049382713,
+                            x: 21.48148148148148,
+                            y: 42.687747035573125,
+                        }
+                    },
+                ]
+            },
+        ],
+        predictions: [],
+        id: 1,
+        data: {
+            content1: "https://htx-misc.s3.amazonaws.com/opensource/label-studio/examples/images/nick-owuor-astro-nic-visuals-wDifg5xc9Z4-unsplash.jpg",
+            content2: ""
+        }
+    },
+    HTMLNERTaskData: {
+        annotations: [
+            {
+                id: "1008",
+                result: [
+                    {
+                        from_name: "ner",
+                        id: "Iz7Z7WEj3y",
+                        to_name: "textner",
+                        type: "hypertextlabels",
+                        value: {
+                            end: "/div[1]/div[1]/div[1]/p[1]/text()[1]",
+                            endOffset: 75,
+                            htmllabels: ["General Satisfaction"],
+                            start: "/div[1]/div[1]/div[1]/p[1]/text()[1]",
+                            startOffset: 64,
+                            text: "appreciated",
+                        }
+                    },
+                    {
+                        from_name: "ner",
+                        id: "S5JfuN-DdQ",
+                        to_name: "textner",
+                        type: "hypertextlabels",
+                        value: {
+                            end: "/div[1]/div[2]/div[1]/p[1]/text()[1]",
+                            endOffset: 1,
+                            htmllabels: ["Doctor Proficiency"],
+                            start: "/div[1]/div[2]/div[1]/p[1]/b[1]/text()[1]",
+                            startOffset: 0,
+                            text: "Vincent:",
+                        }
+                    }
+                ],
+            },
+        ],
+        predictions: [],
+        id: 1,
+        data: {
+            content1: "<div style=\"max-width: 750px\"><div style=\"clear: both\"><div style=\"float: right; display: inline-block; border: 1px solid #F2F3F4; background-color: #F8F9F9; border-radius: 5px; padding: 7px; margin: 10px 0;\"><p><b>Jules</b>: No no, Mr. Wolfe, it's not like that. Your help is definitely appreciated.</p></div></div><div style=\"clear: both\"><div style=\"float: right; display: inline-block; border: 1px solid #F2F3F4; background-color: #F8F9F9; border-radius: 5px; padding: 7px; margin: 10px 0;\"><p><b>Vincent</b>: Look, Mr. Wolfe, I respect you. I just don't like people barking orders at me, that's all.</p></div></div><div style=\"clear: both\"><div style=\"display: inline-block; border: 1px solid #D5F5E3; background-color: #EAFAF1; border-radius: 5px; padding: 7px; margin: 10px 0;\"><p><b>The Wolf</b>: If I'm curt with you, it's because time is a factor. I think fast, I talk fast, and I need you two guys to act fast if you want to get out of this. So pretty please, with sugar on top, clean the car.</p></div></div></div>",
+            content2: ""
+        }
+    },
+    audioClassificationTaskData: {
+        annotations: [
+            {
+                id: "1009",
+                result: [
+                    {
+                        from_name: "topic",
+                        id: "k2eoHaq6dC",
+                        to_name: "audio",
+                        type: "choices",
+                        value: {
+                            choices: ["General Satisfaction"]
+                        }
+                    },
+                ],
+            },
+        ],
+        predictions: [],
+        id: 1,
+        data: {
+            content1: "https://app.heartex.ai/static/samples/game.wav",
+            content2: ""
+        }
+    },
+    textClassificationTaskData: {
+        annotations: [
+            {
+                id: "1010",
+                result: [
+                    {
+                        from_name: "sentiment",
+                        id: "x_KjDmvW5J",
+                        to_name: "text",
+                        type: "choices",
+                        value: {
+                            choices: ["General Satisfaction", "Doctor Proficiency"]
+                        }
+                    },
+                ],
+            },
+        ],
+        predictions: [],
+        id: 1,
+        data: {
+            content1: "To have faith is to trust yourself to the water",
+            content2: ""
         }
     }
 }

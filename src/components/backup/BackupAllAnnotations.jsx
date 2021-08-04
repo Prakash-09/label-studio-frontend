@@ -1,6 +1,6 @@
 import React from 'react';
-import './AllAnnotations.css';
-import sourceData from './AllAnnotationsData';
+import '../annotations/AllAnnotations.css';
+import sourceData from '../annotations/AllAnnotationsData';
 import { Row, Col, Button } from 'react-bootstrap'
 import LabelStudio from 'label-studio';
 import 'label-studio/build/static/css/main.css';
@@ -33,7 +33,22 @@ export default class ImageAnnotation extends React.Component {
             for (const responseObj of responseData) {
                 let taskObj = {
                     annotations: [{ id: `${responseData.indexOf(responseObj)}`, result: [] }],
-                    data: { content1: responseObj.document?.length > 0 ? responseObj.document : "", content2: responseObj.documentSecondary?.length > 0 ? responseObj.documentSecondary : "" },
+                    data: { content1: responseObj.document?.length > 0 && responseObj.document, content2: responseObj.documentSecondary?.length > 0 && responseObj.documentSecondary },
+                    // data: ((responseObj.annotation.type === "text") || (responseObj.annotation.type === "image rectangle") || (responseObj.annotation.type === "image polygon") || (responseObj.annotation.type === "audio") || (responseObj.annotation.type === "keypoints") || (responseObj.annotation.type === "HTML NER") || (responseObj.annotation.type === "audio classification") || (responseObj.annotation.type === "text classification")) ?
+                    //     { content1: responseObj.document }
+                    //     : ((responseObj.annotation.type === "video") || (responseObj.annotation.type === "pairwise")) &&
+                    //     { content1: responseObj.document, content2: responseObj.documentSecondary },
+
+                    // data: responseObj.annotation.type === "text" ? { text: responseObj.document }
+                    //     : responseObj.annotation.type === "image rectangle" ? { image: responseObj.document }
+                    //         : responseObj.annotation.type === "image polygon" ? { image: responseObj.document }
+                    //             : responseObj.annotation.type === "video" ? { video: responseObj.documentSecondary, videoSource: responseObj.document }
+                    //                 : responseObj.annotation.type === "audio" ? { audio: responseObj.document }
+                    //                     : responseObj.annotation.type === "pairwise" ? { text1: responseObj.document, text2: responseObj.documentSecondary }
+                    //                         : responseObj.annotation.type === "keypoints" ? { image: responseObj.document }
+                    //                             : responseObj.annotation.type === "HTML NER" ? { text: responseObj.document }
+                    //                                 : responseObj.annotation.type === "audio classification" ? { audio: responseObj.document }
+                    //                                     : responseObj.annotation.type === "text classification" && { text: responseObj.document },
                     id: 1 + parseInt(`${responseData.indexOf(responseObj)}`),
                     predictions: [],
                     modified: responseObj.modified ? responseObj.modified : false,
@@ -84,12 +99,32 @@ export default class ImageAnnotation extends React.Component {
         return randomColor
     }
     buildLabelStudio(lsLegendLabelsParam, interfacesDataParam, taskDataParam, taskNavId) {
-        console.log("taskDataParam", taskDataParam)
         const lsLegendLabels = lsLegendLabelsParam;
         const interfacesData = interfacesDataParam
         let taskData = taskDataParam
         let navigation = taskNavId
         new LabelStudio('label-studio', {
+            // config: `${taskData[navigation].annotationType === "image rectangle" ?
+            //     this.lsConfigImageHtml(lsLegendLabels, "rect")
+            //     : taskData[navigation].annotationType === "image polygon" ?
+            //         this.lsConfigImageHtml(lsLegendLabels, "poly")
+            //         : taskData[navigation].annotationType === "text" ?
+            //             this.lsConfigTextHtml(lsLegendLabels)
+            //             : taskData[navigation].annotationType === "video" ?
+            //                 this.lsConfigVideoHtml(lsLegendLabels)
+            //                 : taskData[navigation].annotationType === "audio" ?
+            //                     this.lsConfigAudioHtml(lsLegendLabels)
+            //                     : taskData[navigation].annotationType === "pairwise" ?
+            //                         this.lsConfigPairwiseHtml(lsLegendLabels)
+            //                         : taskData[navigation].annotationType === "keypoints" ?
+            //                             this.lsConfigKeypointHtml(lsLegendLabels)
+            //                             : taskData[navigation].annotationType === "HTML NER" ?
+            //                                 this.lsConfigHTMLNERHtml(lsLegendLabels)
+            //                                 : taskData[navigation].annotationType === "audio classification" ?
+            //                                     this.lsConfigAudioClassicHtml(lsLegendLabels)
+            //                                     : taskData[navigation].annotationType === "text classification" &&
+            //                                     this.lsConfigTextClassicHtml(lsLegendLabels)
+            //     }`,
             config: this.lsConfigHtml(taskData, navigation, lsLegendLabels),
             interfaces: interfacesData,
             task: taskData[navigation],
@@ -144,7 +179,7 @@ export default class ImageAnnotation extends React.Component {
             return (
                 `<View>
                     <Header value="Video labeling"/>
-                    <Labels name="tricks" toName="audio">
+                    <Labels name="tricks" toName="audio" choice="multiple">
                         ${lsLegendLabels.map((item, itemIdx) => `<Label key='${itemIdx}' value='${item.displayName}' background='${item.background}' />`)}
                     </Labels>
                     <HyperText name="video" value="$content2"/>
@@ -156,7 +191,7 @@ export default class ImageAnnotation extends React.Component {
             return (
                 `< View >
                     <Header value="Audio labeling"/>
-                    <Labels name="label" toName="audio">
+                    <Labels name="label" toName="audio" choice="multiple">
                         ${lsLegendLabels.map((item, itemIdx) => `<Label key='${itemIdx}' value='${item.displayName}' background='${item.background}' />`)}
                     </Labels>
                     <AudioPlus name="audio" value="$content1"></AudioPlus>
@@ -220,6 +255,130 @@ export default class ImageAnnotation extends React.Component {
                 </View>`
             )
         }
+    }
+    lsConfigImageHtml(lsLegendLabelsParam, typeParam) {
+        const lsLegendLabels = lsLegendLabelsParam
+        const type = typeParam
+        if (type === "rect") {
+            return (
+                `<View>
+                    <Header value="Image rectangle labeling"/>
+                    <RectangleLabels name="tag" toName="img">
+                        ${lsLegendLabels.map((item, itemIdx) => `<Label key='${itemIdx}' value='${item.displayName}' background='${item.background}' />`)}
+                    </RectangleLabels>
+                    <Image name="img" value="$image"></Image>
+                </View>`
+            )
+        } else if (type === "poly") {
+            return (
+                `<View>
+                    <Header value="Image polygon labeling"/>
+                    <PolygonLabels name="tag" toName="img" strokeWidth="3" pointSize="small" opacity="0.9">
+                        ${lsLegendLabels.map((item, itemIdx) => `<Label key='${itemIdx}' value='${item.displayName}' background='${item.background}' />`)}
+                    </PolygonLabels>
+                    <Image name="img" value="$image"></Image>
+                </View>`
+            )
+        }
+    }
+    lsConfigTextHtml(lsLegendLabelsParam) {
+        const lsLegendLabels = lsLegendLabelsParam
+        return (
+            `<View>
+                <Header value="Text labeling"/>
+                <Text name="text" value="$text" />
+                <Labels name="label" toName="text">
+                    ${lsLegendLabels.map((item, itemIdx) => `<Label key='${itemIdx}' value='${item.displayName}' background='${item.background}' />`)}
+                </Labels>
+            </View>`
+        )
+    }
+    lsConfigVideoHtml(lsLegendLabelsParam) {
+        const lsLegendLabels = lsLegendLabelsParam
+        return (
+            `<View>
+                <Header value="Video labeling"/>
+                <Labels name="tricks" toName="audio" choice="multiple">
+                ${lsLegendLabels.map((item, itemIdx) => `<Label key='${itemIdx}' value='${item.displayName}' background='${item.background}' />`)}
+                </Labels>
+                <HyperText name="video" value="$video"/>
+                <AudioPlus name="audio" value="$videoSource" speed="false"/>
+            </View>`
+        )
+    }
+    lsConfigAudioHtml(lsLegendLabelsParam) {
+        const lsLegendLabels = lsLegendLabelsParam
+        return (
+            `< View >
+                <Header value="Audio labeling"/>
+                <Labels name="label" toName="audio" choice="multiple">
+                ${lsLegendLabels.map((item, itemIdx) => `<Label key='${itemIdx}' value='${item.displayName}' background='${item.background}' />`)}
+                </Labels>
+                <AudioPlus name="audio" value="$audio"></AudioPlus>
+            </View >`
+        )
+    }
+    lsConfigPairwiseHtml(lsLegendLabelsParam) {
+        const lsLegendLabels = lsLegendLabelsParam
+        return (
+            `<View>
+                <Header>Pairwise labeling</Header>
+                <Pairwise name="pw" toName="text1,text2" />
+                <Text name="text1" value="$text1" />
+                <Text name="text2" value="$text2" />
+            </View>`
+        )
+    }
+    lsConfigKeypointHtml(lsLegendLabelsParam) {
+        const lsLegendLabels = lsLegendLabelsParam
+        return (
+            `<View>
+                <Header value="Keypoint labeling"/>
+                <KeyPointLabels name="label" toName="img" strokewidth="2" opacity="1" >
+                    ${lsLegendLabels.map((item, itemIdx) => `<Label key='${itemIdx}' value='${item.displayName}' background='${item.background}' />`)}
+                </KeyPointLabels>
+                <Image name="img" value="$image" zoom="true" zoomControl="true"></Image>
+            </View>`
+        )
+    }
+    lsConfigHTMLNERHtml(lsLegendLabelsParam) {
+        const lsLegendLabels = lsLegendLabelsParam
+        return (
+            `<View>
+            <Header value="HTML NER labeling"/>
+            <HyperTextLabels name="ner" toName="textner">
+            ${lsLegendLabels.map((item, itemIdx) => `<Label key='${itemIdx}' value='${item.displayName}' background='${item.background}' />`)}
+            </HyperTextLabels>
+            <View style="border: 1px solid #CCC; border-radius: 10px; padding: 5px">
+                <HyperText name="textner" value="$text"/>
+            </View>
+            </View>`
+        )
+    }
+    lsConfigAudioClassicHtml(lsLegendLabelsParam) {
+        const lsLegendLabels = lsLegendLabelsParam
+        return (
+            `<View>
+            <Header value="Audio classification labeling"/>
+            <Header value="Select its topic"/>
+            <Choices name="topic" toName="audio" choice="single-radio" showInline="true">
+                ${lsLegendLabels.map((item, itemIdx) => `<Choice key='${itemIdx}' value='${item.displayName}' />`)}
+            </Choices>
+            <Audio name="audio" value="$audio"/>
+            </View>`
+        )
+    }
+    lsConfigTextClassicHtml(lsLegendLabelsParam) {
+        const lsLegendLabels = lsLegendLabelsParam
+        return (
+            `<View>
+                <Header value="Text classification labeling"/>
+                <Choices name="sentiment" toName="text" choice="multiple">
+                    ${lsLegendLabels.map((item, itemIdx) => `<Choice key='${itemIdx}' value='${item.displayName}' />`)}
+                </Choices>
+            <Text name="text" value="$text"/>
+            </View>`
+        )
     }
     updateAnnotation(ls, annotation) {
         console.log("structure", annotation.serializeAnnotation())

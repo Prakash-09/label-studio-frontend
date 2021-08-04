@@ -7,12 +7,14 @@ import './App.css';
 // import SampleFourLs from './components/examplefour/SampleFourLs';
 // import Test from './components/examplefour/Test';
 // import RandomColors from './components/randomcolors/RandomColors';
-import ImageAnnotation from './components/annotations/AllAnnotations';
+import AllAnnotations from './components/annotations/AllAnnotations';
+// import TestAllAnnoatations from './components/TestAllAnnotations';
+// import BackupAllAnnotations from './components/backup/BackupAllAnnotations'
 
 function App() {
     return (
         <div className="App container-fluid">
-            <ImageAnnotation />
+            <AllAnnotations />
         </div>
     );
 }
