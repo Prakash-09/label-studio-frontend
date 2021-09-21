@@ -13,6 +13,7 @@
         "react-bootstrap": "^1.6.1",
         "react-dom": "^16.14.0",
         "react-scripts": "^3.4.4",
+        "tesseract.js": "^2.0.1",
         "web-vitals": "^1.1.2"
     },
     "scripts": {

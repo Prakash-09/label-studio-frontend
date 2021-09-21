@@ -33,9 +33,9 @@ export default class TestAllAnnoatations extends React.Component {
         let lsLegendLabels = lsLegendLabelsParam
         let interfacesData = interfacesDataParam
         new LabelStudio('label-studio', {
-            config: this.lsConfigTextClassicHtml(lsLegendLabels, "poly"),
+            config: this.lsConfigImageHtml(lsLegendLabels, "rect"),
             interfaces: interfacesData,
-            task: LABEL_STUDIO_STRUCTURE.textClassificationTaskData,
+            task: LABEL_STUDIO_STRUCTURE.rectangleImageTaskData,
             onLabelStudioLoad: function (LS) {
                 var c = LS.annotationStore.addAnnotation({
                     userGenerate: true

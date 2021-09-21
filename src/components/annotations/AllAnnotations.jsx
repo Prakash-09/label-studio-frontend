@@ -4,6 +4,7 @@ import sourceData from './AllAnnotationsData';
 import { Row, Col, Button } from 'react-bootstrap'
 import LabelStudio from 'label-studio';
 import 'label-studio/build/static/css/main.css';
+import { createWorker } from 'tesseract.js';
 
 export default class ImageAnnotation extends React.Component {
     constructor(props) {
@@ -84,7 +85,7 @@ export default class ImageAnnotation extends React.Component {
         return randomColor
     }
     buildLabelStudio(lsLegendLabelsParam, interfacesDataParam, taskDataParam, taskNavId) {
-        console.log("taskDataParam", taskDataParam)
+        // console.log("taskDataParam", taskDataParam)
         const lsLegendLabels = lsLegendLabelsParam;
         const interfacesData = interfacesDataParam
         let taskData = taskDataParam
@@ -100,6 +101,7 @@ export default class ImageAnnotation extends React.Component {
                 });
                 LS.annotationStore.selectAnnotation(c.id);
             },
+            onEntityCreate: this.entityCreate.bind(this),
             onUpdateAnnotation: this.updateAnnotation.bind(this),
         });
     }
@@ -221,17 +223,28 @@ export default class ImageAnnotation extends React.Component {
             )
         }
     }
+    entityCreate(region) {
+        console.log("region", region)
+    }
     updateAnnotation(ls, annotation) {
-        console.log("structure", annotation.serializeAnnotation())
-        // let taskData = JSON.parse(JSON.stringify(this.state.taskData))
+        // console.log("structure", annotation.serializeAnnotation())
+        let taskData = JSON.parse(JSON.stringify(this.state.taskData))
         // let response = JSON.parse(JSON.stringify(this.state.response))
-        // const interfacesData = this.state.interfacesData
-        // let lsLegendLabels = this.state.lsLegendLabels
-        // let taskNavigation = this.state.taskNavigation
+        const interfacesData = this.state.interfacesData
+        let lsLegendLabels = this.state.lsLegendLabels
+        let taskNavigation = this.state.taskNavigation
         // let selectedReponseObj = response[ls.task.id - 1]
-        // let selectedTask = taskData.filter(task => task.id === ls.task.id)[0]
+        let selectedTask = taskData.filter(task => task.id === ls.task.id)[0]
 
-        // selectedTask.annotations[0].result = annotation.serializeAnnotation()
+        selectedTask.annotations[0].result = annotation.serializeAnnotation()
+
+        this.buildTesseract(selectedTask.data.content1, selectedTask.annotations[0].result)
+        // const requestOptions = {
+        //     method: 'POST',
+        //     body: JSON.stringify(payload)
+        // }
+        // window.fetch(url, requestOptions);
+
         // selectedReponseObj.annotation.entities = []
 
         // for (const resultObj of selectedTask.annotations[0].result) {
@@ -247,9 +260,32 @@ export default class ImageAnnotation extends React.Component {
         // }
         // selectedTask.modified = true
         // console.log("response", response)
-        // this.buildLabelStudio(lsLegendLabels, interfacesData, taskData, taskNavigation)
+        this.buildLabelStudio(lsLegendLabels, interfacesData, taskData, taskNavigation)
 
         // this.setState({ taskData: taskData, response: response })
+        console.log("selectedTask", selectedTask)
+        this.setState({ taskData: taskData })
+    }
+    async buildTesseract(imageParam, resultParam) {
+        const worker = createWorker({
+            logger: m => console.log(m),
+        });
+        await worker.load();
+        await worker.loadLanguage('eng');
+        await worker.initialize('eng');
+
+        for (const resultObj of resultParam) {
+            let rectangle = {
+                left: resultObj.value.x / 100.0 * resultObj.original_width,
+                top: resultObj.value.y / 100.0 * resultObj.original_height,
+                width: resultObj.value.width / 100.0 * resultObj.original_width,
+                height: resultObj.value.height / 100.0 * resultObj.original_height
+            }
+            const { data: { text } } = await worker.recognize(imageParam, { rectangle: rectangle });
+
+            resultObj.text = text
+        }
+        await worker.terminate();
     }
     navigateTask(type) {
         let { taskNavigation, response, taskData, lsLegendLabels, interfacesData } = this.state

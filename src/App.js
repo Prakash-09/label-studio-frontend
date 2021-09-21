@@ -10,11 +10,14 @@ import './App.css';
 import AllAnnotations from './components/annotations/AllAnnotations';
 // import TestAllAnnoatations from './components/TestAllAnnotations';
 // import BackupAllAnnotations from './components/backup/BackupAllAnnotations'
+// import TesseractOne from './components/tesseract/tesseractone/TesseractOne';
 
 function App() {
     return (
         <div className="App container-fluid">
             <AllAnnotations />
+            {/* <TestAllAnnoatations /> */}
+            {/* < TesseractOne /> */}
         </div>
     );
 }
